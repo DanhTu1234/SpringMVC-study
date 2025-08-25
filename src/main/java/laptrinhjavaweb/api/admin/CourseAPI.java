@@ -54,21 +54,20 @@ public class CourseAPI {
             // Nếu thành công, lấy ID từ LMS và gán vào đối tượng của LCMS
             courseModel.setLmsCourseId(responseFromLMS.getId());
         } else {
-            // Nếu thất bại, báo lỗi
-            System.err.println("Không thể đồng bộ khóa học với LMS.");
+            // Nếu thất bại trả về lỗi
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // Lưu vào CSDL của LCMS
         CourseModel saveLCMS = courseService.insert(courseModel);
 
-        // Trả về đối tượng đã lưu và status
+        // Trả về đối tượng đã lưu và status hiển thị trong postman
         return new ResponseEntity<>(saveLCMS, HttpStatus.OK);
     }
 
     @PutMapping("/api/course/{id}")
     public ResponseEntity<CourseModel> updateCourse(@PathVariable Long id, @RequestBody CourseModel courseModel) {
-        // Gán ID từ URL vào đối tượng để đảm bảo update đúng bản ghi
+        // Gán ID từ URL vào courseModel
         courseModel.setId(id);
 
         CourseModel oldCourse = courseService.findOne(id);
@@ -77,11 +76,23 @@ public class CourseAPI {
 
         syncService.updateLMS(courseModel);
 
-        // Bước 3: Chỉ khi LMS cập nhật thành công, mới cập nhật CSDL của LCMS
+        // Khi LMS cập nhật thành công, mới cập nhật CSDL của LCMS
         CourseModel updatedCourse = courseService.update(courseModel);
 
         // Trả về đối tượng đã cập nhật thành công
         return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/course/{id}")
+    public ResponseEntity<String> deleteCourse(@PathVariable Long id) {
+
+        CourseModel oldCourse = courseService.findOne(id);
+
+        syncService.deleteLMS(oldCourse);
+
+        // Khi LMS cập nhật thành công, mới cập nhật CSDL của LCMS
+        courseService.delete(id);
+        return ResponseEntity.ok("Course deleted succes!");
     }
 
 
@@ -108,14 +119,14 @@ public class CourseAPI {
 //    }
 
 
-    @PutMapping("/api/course")
-    public CourseModel updateCourse(@RequestBody CourseModel updateCourse){
-        return courseService.update(updateCourse);
-    }
-
-    @DeleteMapping("/api/course/{id}")
-    public void deleteCourse(@PathVariable long id){
-        courseService.delete(id);
-    }
+//    @PutMapping("/api/course")
+//    public CourseModel updateCourse(@RequestBody CourseModel updateCourse){
+//        return courseService.update(updateCourse);
+//    }
+//
+//    @DeleteMapping("/api/course/{id}")
+//    public void deleteCourse(@PathVariable long id){
+//        courseService.delete(id);
+//    }
 
 }

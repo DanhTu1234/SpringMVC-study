@@ -13,6 +13,16 @@ public class CourseModel {
     @JsonProperty("category_id")
     private Long categoryCourseId;
 
+    public CategoryCourseModel getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryCourseModel category) {
+        this.category = category;
+    }
+
+    private CategoryCourseModel category = new CategoryCourseModel();
+
     public Long getCategoryCourseId() {
         return categoryCourseId;
     }

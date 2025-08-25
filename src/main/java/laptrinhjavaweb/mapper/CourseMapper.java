@@ -13,6 +13,7 @@ public class CourseMapper implements RowMapper<CourseModel> {
         CourseModel course = new CourseModel();
         course.setId(rs.getLong("id"));
         course.setCategoryCourseId(rs.getLong("category_id"));
+        course.getCategory().setName(rs.getString("name"));
         course.setFullName(rs.getString("fullname"));
         course.setShortName(rs.getString("shortname"));
         course.setSummary(rs.getString("summary"));

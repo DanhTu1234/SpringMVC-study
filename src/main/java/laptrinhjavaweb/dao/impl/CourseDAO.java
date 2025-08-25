@@ -24,7 +24,7 @@ public class CourseDAO implements ICourseDAO {
 
     @Override
     public List<CourseModel> findAll() {
-        String sql = "SELECT * FROM course";
+        String sql = "SELECT course.*, categorycourse.name FROM course join categorycourse on course.category_id = categorycourse.id";
 
         return jdbcTemplate.query(sql, new CourseMapper());
     }
@@ -204,7 +204,7 @@ public class CourseDAO implements ICourseDAO {
 
     @Override
     public CourseModel findOne(Long id) {
-        String sql = "SELECT * FROM course WHERE id = ?";
+        String sql = "SELECT course.*, categorycourse.* FROM course join categorycourse on course.category_id = categorycourse.id WHERE course.id = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new CourseMapper(), id);
         } catch (EmptyResultDataAccessException e) {

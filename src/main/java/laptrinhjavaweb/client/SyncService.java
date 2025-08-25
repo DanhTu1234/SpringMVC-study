@@ -16,34 +16,23 @@ import java.util.Map;
 public class SyncService {
     private final RestTemplate restTemplate = new RestTemplate();
 
-//    public void pushToWebB(CourseModel courseModel) {
-//        String apiUrl = "http://localhost:8081/Test-api/api/courses";
-//        try {
-//            restTemplate.postForObject(apiUrl, courseModel, CourseModel.class);
-//            System.out.println(">>> Đồng bộ sang Web B thành công!");
-//        } catch (Exception e) {
-//            System.out.println(">>> Lỗi khi gửi sang Web B: " + e.getMessage());
-//        }
-//
-//    }
-
     private static final String LMS_URL = "http://localhost:8081/Test-api/api/courses";
     public CourseModel pushLMS(CourseModel courseModel) {
         // Thiết lập header để báo cho server biết chúng ta gửi dữ liệu JSON
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_JSON);
-
         // Tạo một request entity chứa đối tượng CourseModel và header
         HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, header);
 
         try {
-            // Gọi API POST của LMS.
-            // Yêu cầu RestTemplate chuyển đổi JSON trả về thành đối tượng CourseModel.
-            CourseModel responseFromLMS = restTemplate.postForObject(LMS_URL, request, CourseModel.class);
+            // Gọi API POST của LMS qua exchange
+            ResponseEntity<CourseModel> response = restTemplate.exchange(LMS_URL, HttpMethod.POST, request, CourseModel.class);
+
+            // Lấy body CourseModel từ response
+            CourseModel responseFromLMS = response.getBody();
 
             // Kiểm tra và trả về kết quả
-            if (responseFromLMS != null && responseFromLMS.getId() != null) {
-                System.out.println(">>> Đồng bộ sang LMS thành công, ID nhận được = " + responseFromLMS.getId());
+            if (responseFromLMS != null) {
                 return responseFromLMS;
             }
         } catch (Exception e) {
@@ -55,40 +44,31 @@ public class SyncService {
     }
 
     public void updateLMS(CourseModel courseModel) {
-        String updateUrl = LMS_URL + "/" + courseModel.getLmsCourseId();
+        String updateUrl = LMS_URL + "/{id}";
         HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, header);
 
         try {
-            restTemplate.put(updateUrl, request);
-            System.out.println(">>> Đồng bộ (cập nhật) sang LMS thành công cho lms_course_id = " + courseModel.getLmsCourseId());
+            restTemplate.exchange(updateUrl, HttpMethod.PUT, request, CourseModel.class, courseModel.getLmsCourseId());
         } catch (Exception e) {
-            System.err.println(">>> Lỗi khi đồng bộ (cập nhật) sang LMS: " + e.getMessage());
+            System.err.println(">>> Lỗi khi đồng bộ sang LMS: " + e.getMessage());
         }
     }
 
-//    public CourseModel updateLMS(CourseModel courseModel) {
-//        String updateUrl = LMS_URL + "/" + courseModel.getLmsCourseId();
-//
-//        HttpHeaders header = new HttpHeaders();
-//        header.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<CourseModel> request = new HttpEntity<>(courseModel, header);
-//
-//        try {
-//            ResponseEntity<CourseModel> responseFromLMS = restTemplate.exchange(
-//                    updateUrl,
-//                    HttpMethod.PUT,
-//                    request,
-//                    CourseModel.class
-//            );
-//            System.out.println(" Đồng bộ sang LMS thành công");
-//            return responseFromLMS.getBody();
-//        } catch (Exception e) {
-//            System.err.println(" Lỗi khi đồng bộ sang LMS: " + e.getMessage());
-//        }
-//        return null;
-//    }
+    public void deleteLMS(CourseModel courseModel) {
+        String deleteUrl = LMS_URL + "/{id}";
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> request = new HttpEntity<>(header);
+
+        try {
+            restTemplate.exchange(deleteUrl, HttpMethod.DELETE, request, Void.class, courseModel.getLmsCourseId());
+        } catch (Exception e) {
+            System.err.println(">>> Lỗi khi đồng bộ sang LMS: " + e.getMessage());
+        }
+    }
+
 }
 
 //@Service

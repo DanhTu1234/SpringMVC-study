@@ -1,7 +1,7 @@
 package laptrinhjavaweb.service.impl;
 
 import laptrinhjavaweb.dao.ICategoryDAO;
-import laptrinhjavaweb.model.CategoryNewModel;
+import laptrinhjavaweb.model.CategoryCourseModel;
 import laptrinhjavaweb.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class CategoryService implements ICategoryService {
     private ICategoryDAO categoryDao;
 
     @Override
-    public List<CategoryNewModel> findAll() {
+    public List<CategoryCourseModel> findAll() {
 
         return categoryDao.findAll();
     }

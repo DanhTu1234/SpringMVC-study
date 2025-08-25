@@ -1,11 +1,11 @@
 package laptrinhjavaweb.dao;
 
-import laptrinhjavaweb.model.CategoryNewModel;
+import laptrinhjavaweb.model.CategoryCourseModel;
 
 import java.util.List;
 
-public interface ICategoryDAO extends GenericDAO {
-    List<CategoryNewModel> findAll();
-    CategoryNewModel findOne(long id);
-    CategoryNewModel findOneByCode(String code);
+public interface ICategoryDAO{
+    List<CategoryCourseModel> findAll();
+    CategoryCourseModel findOne(long id);
+    CategoryCourseModel findOneByCode(String code);
 }

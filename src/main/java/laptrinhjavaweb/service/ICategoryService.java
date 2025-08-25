@@ -1,9 +1,9 @@
 package laptrinhjavaweb.service;
 
-import laptrinhjavaweb.model.CategoryNewModel;
+import laptrinhjavaweb.model.CategoryCourseModel;
 
 import java.util.List;
 
 public interface ICategoryService {
-    List<CategoryNewModel> findAll();
+    List<CategoryCourseModel> findAll();
 }
