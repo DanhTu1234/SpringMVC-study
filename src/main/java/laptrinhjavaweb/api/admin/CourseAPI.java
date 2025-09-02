@@ -31,18 +31,6 @@ public class CourseAPI {
         return courseService.findAll();
     }
 
-//    @PostMapping("/api/course")
-//    public CourseModel createCourse(@RequestBody CourseModel courseModel) {
-//        return courseService.insert(courseModel);
-//    }
-
-//    @PostMapping("/api/course")
-//    public CourseModel createCourse(@RequestBody CourseModel courseModel){
-//        CourseModel saved = courseService.insert(courseModel);
-//        syncService.pushToWebB(saved);
-//        return saved;
-//    }
-
     @PostMapping("/api/course")
     public ResponseEntity<CourseModel> createCourse(@RequestBody CourseModel courseModel) {
 

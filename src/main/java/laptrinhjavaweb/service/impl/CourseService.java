@@ -17,9 +17,6 @@ public class CourseService implements ICourseService {
     @Autowired
     private ICourseDAO courseDao;
 
-    @Autowired
-    private ICategoryDAO categoryDao;
-
     @Override
     public List<CourseModel> findAll() {
         return courseDao.findAll();
