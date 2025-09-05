@@ -1,9 +1,7 @@
 package laptrinhjavaweb.api.admin;
 
-import laptrinhjavaweb.model.CourseModel;
 import laptrinhjavaweb.model.DepartmentModel;
 import laptrinhjavaweb.service.IDepartmentService;
-import laptrinhjavaweb.service.impl.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

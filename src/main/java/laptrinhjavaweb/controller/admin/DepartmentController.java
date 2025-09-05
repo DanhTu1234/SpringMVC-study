@@ -1,6 +1,5 @@
 package laptrinhjavaweb.controller.admin;
 
-import laptrinhjavaweb.model.CourseModel;
 import laptrinhjavaweb.model.DepartmentModel;
 import laptrinhjavaweb.service.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;

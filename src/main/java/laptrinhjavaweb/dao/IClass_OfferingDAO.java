@@ -2,7 +2,6 @@ package laptrinhjavaweb.dao;
 
 import laptrinhjavaweb.dto.Class_OfferingDTO;
 import laptrinhjavaweb.model.Class_OfferingModel;
-import laptrinhjavaweb.model.CourseModel;
 
 import java.util.List;
 

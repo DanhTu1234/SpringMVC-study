@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import laptrinhjavaweb.dao.ICourseDAO;
+import laptrinhjavaweb.dto.CourseDTO;
+import laptrinhjavaweb.mapper.CourseDTOMapper;
 import laptrinhjavaweb.mapper.CourseMapper;
 import laptrinhjavaweb.model.CourseModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,43 +31,9 @@ public class CourseDAO implements ICourseDAO {
         return jdbcTemplate.query(sql, new CourseMapper());
     }
 
-//    @Override
-//    public List<CourseModel> findAll() {
-//        List<CourseModel> results = new ArrayList<>();
-//        StringBuilder sql = new StringBuilder("SELECT * FROM course");
-//
-//        Connection con = getConnection();
-//        PreparedStatement statement = null;
-//        ResultSet rs = null;
-//
-//        if (con != null) {
-//            try {
-//                statement = con.prepareStatement(sql.toString());
-//
-//                rs = statement.executeQuery();
-//                while (rs.next()) {
-//                    //Đẩy dl vào đối tượng NewModel
-//                    CourseModel courses = new CourseModel();
-//                    courses.setId(rs.getLong("id"));
-//                    courses.setFullname(rs.getString("fullname"));
-//                    courses.setShortname(rs.getString("shortname"));
-//                    courses.setSummary(rs.getString("summary"));
-//                    courses.setStartDate(rs.getTimestamp("startdate"));
-//                    courses.setEndDate(rs.getTimestamp("enddate"));
-//
-//                    results.add(courses);
-//                }
-//                return results;
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return null;
-//    }
-
     @Override
-    public Long insert(CourseModel courseModel) {
-        String sql = "INSERT INTO course (category_id, fullname, shortname, summary, created_date, modified_date, created_by, modified_by, lms_course_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public CourseModel insert(CourseModel courseModel) {
+        String sql = "INSERT INTO course (category_id, fullname, shortname, summary, created_date, modified_date, created_by, modified_by) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         // KeyHolder dùng để giữ ID tự tăng được sinh ra sau khi insert
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -83,124 +51,33 @@ public class CourseDAO implements ICourseDAO {
                 ps.setTimestamp(6, courseModel.getModifiedDate());
                 ps.setString(7, courseModel.getCreatedBy());
                 ps.setString(8, courseModel.getModifiedBy());
-                ps.setLong(9, courseModel.getLmsCourseId());
                 return ps;
             }
         }, keyHolder);
 
-        // Lấy ID vừa được tạo ra từ KeyHolder
-        // keyHolder.getKey() có thể trả về null nếu không có key nào được sinh ra
         if (keyHolder.getKey() != null) {
-            return keyHolder.getKey().longValue();
+            courseModel.setId(keyHolder.getKey().longValue());
         }
-        return null;
+        return courseModel;
     }
-
-//    @Override
-//    public Long insert(CourseModel courseModel) {
-//        Long id=null;
-//        String sql="insert into course (fullname, shortname, summary, startdate, enddate) values(?, ?, ?, ?, ?)";
-//        Connection con = getConnection();
-//        PreparedStatement statement = null;
-//        ResultSet rs=null;
-//
-//        try {
-//            con.setAutoCommit(false);
-//
-//            //Gán tham số vào PreparedStatement để insert
-//            statement=con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//            statement.setString(1, courseModel.getFullname());
-//            statement.setString(2, courseModel.getShortname());
-//            statement.setString(3, courseModel.getSummary());
-//            statement.setTimestamp(4, courseModel.getStartDate());
-//            statement.setTimestamp(5, courseModel.getEndDate());
-//
-//            statement.executeUpdate();
-//            rs=statement.getGeneratedKeys();
-//            if(rs.next()) {
-//                id=rs.getLong(1);
-//            }
-//            con.commit();
-//            return id;
-//        }catch(SQLException e) {
-//            if(con!=null) {
-//                try {
-//                    con.rollback();
-//                }catch(SQLException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//            return null;
-//        }
-//    }
 
     @Override
-    public void update(CourseModel updateCourse) {
+    public CourseModel update(CourseModel updateCourse) {
         String sql = "UPDATE course SET category_id = ?, fullname = ?, shortname = ?, summary = ?, created_date = ?, modified_date = ?, created_by = ?, modified_by = ?, lms_course_id = ? WHERE id = ?";
-        jdbcTemplate.update(sql, updateCourse.getCategoryCourseId(), updateCourse.getFullName(), updateCourse.getShortName(),
+        int row = jdbcTemplate.update(sql, updateCourse.getCategoryCourseId(), updateCourse.getFullName(), updateCourse.getShortName(),
                 updateCourse.getSummary(), updateCourse.getCreatedDate(), updateCourse.getModifiedDate(), updateCourse.getCreatedBy(),
                 updateCourse.getModifiedBy(), updateCourse.getLmsCourseId(), updateCourse.getId());
+        if(row == 0){
+            throw new RuntimeException("Không tìm thấy bản ghi");
+        }
+        return updateCourse;
     }
-
-//    @Override
-//    public void update(CourseModel updateCourse) {
-//        String sql = "UPDATE course SET fullname = ?, shortname = ?, summary = ?, startdate = ?, enddate = ? WHERE id = ?";
-//        Connection con = getConnection();
-//        PreparedStatement statement = null;
-//
-//        try {
-//            con.setAutoCommit(false);
-//            statement = con.prepareStatement(sql);
-//            statement.setString(1, updateCourse.getFullname());
-//            statement.setString(2, updateCourse.getShortname());
-//            statement.setString(3, updateCourse.getSummary());
-//            statement.setTimestamp(4, updateCourse.getStartDate());
-//            statement.setTimestamp(5, updateCourse.getEndDate());
-//            statement.setLong(6, updateCourse.getId()); // ID để xác định bản ghi cần cập nhật
-//
-//            statement.executeUpdate();
-//            con.commit();
-//        } catch(SQLException e) {
-//            if(con!=null) {
-//                try {
-//                    con.rollback();
-//                }catch(SQLException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//        }
-//
-//    }
 
     @Override
     public void delete(long id) {
         String sql = "DELETE FROM course WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
-
-
-//    public void delete(long id) {
-//        String sql = "DELETE FROM course WHERE id = ?";
-//        Connection con = getConnection();
-//        PreparedStatement statement = null;
-//
-//        try {
-//            con.setAutoCommit(false);
-//            statement = con.prepareStatement(sql);
-//            statement.setLong(1, id); // Truyền id để xóa bản ghi tương ứng
-//
-//            statement.executeUpdate();
-//            con.commit();
-//        }catch(SQLException e) {
-//            if(con!=null) {
-//                try {
-//                    con.rollback();
-//                }catch(SQLException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public CourseModel findOne(Long id) {
@@ -212,36 +89,15 @@ public class CourseDAO implements ICourseDAO {
         }
     }
 
-//    @Override
-//    public CourseModel findOne(Long id) {
-//        String sql = "SELECT * FROM course WHERE id = ?";
-//        Connection con = getConnection();
-//        PreparedStatement statement = null;
-//        ResultSet rs = null;
-//
-//        try {
-//            statement = con.prepareStatement(sql);
-//            statement.setLong(1, id);
-//            rs = statement.executeQuery();
-//
-//            if (rs.next()) {
-//                CourseModel courses = new CourseModel();
-//                courses.setId(rs.getLong("id"));
-//                courses.setFullname(rs.getString("fullname"));
-//                courses.setShortname(rs.getString("shortname"));
-//                courses.setSummary(rs.getString("summary"));
-//                courses.setStartDate(rs.getTimestamp("startdate"));
-//                courses.setEndDate(rs.getTimestamp("enddate"));
-////                news.setShortDescription(rs.getString("shortdescription"));
-////                news.setCreatedDate(rs.getTimestamp("createddate"));
-////                news.setCreatedBy(rs.getString("createdby"));
-//                return courses;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
+    @Override
+    public CourseDTO findCourseById(long id) {
+        String sql = "SELECT cc.lms_category_id as categoryid, c.fullname as fullname, c.shortname as shortname, c.summary as summary " +
+                "FROM course c join categorycourse cc on c.category_id = cc.id  WHERE c.id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new CourseDTOMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
 }

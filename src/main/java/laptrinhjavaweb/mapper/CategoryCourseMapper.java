@@ -13,7 +13,8 @@ public class CategoryCourseMapper implements RowMapper<CategoryCourseModel> {
         CategoryCourseModel course = new CategoryCourseModel();
         course.setId(rs.getLong("id"));
         course.setName(rs.getString("name"));
-        course.setCode(rs.getString("code"));
+        course.setDescription(rs.getString("description"));
+        course.setParent(rs.getLong("parent"));
         return course;
     }
 }

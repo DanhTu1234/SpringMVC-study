@@ -71,6 +71,7 @@ public class CourseModel {
         this.modifiedBy = modifiedBy;
     }
 
+    @JsonProperty("lms_course_id")
     private Long lmsCourseId;
 
     @JsonProperty("fullname")
@@ -95,6 +96,7 @@ public class CourseModel {
     @JsonProperty("shortname")
     private String shortName;
 
+    @JsonProperty("summary")
     private String summary;
 
     public Long getId() {

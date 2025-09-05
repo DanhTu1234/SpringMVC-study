@@ -1,6 +1,5 @@
 package laptrinhjavaweb.dao;
 
-import laptrinhjavaweb.model.CourseModel;
 import laptrinhjavaweb.model.DepartmentModel;
 
 import java.util.List;

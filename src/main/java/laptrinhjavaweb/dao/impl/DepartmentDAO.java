@@ -1,7 +1,6 @@
 package laptrinhjavaweb.dao.impl;
 
 import laptrinhjavaweb.dao.IDepartmentDAO;
-import laptrinhjavaweb.mapper.CourseMapper;
 import laptrinhjavaweb.mapper.DepartmentMapper;
 import laptrinhjavaweb.model.DepartmentModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Collections;
 import java.util.List;
 
 @Repository

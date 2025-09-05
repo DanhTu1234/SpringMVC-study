@@ -1,8 +1,6 @@
 package laptrinhjavaweb.mapper;
 
-import laptrinhjavaweb.model.CategoryCourseModel;
 import laptrinhjavaweb.model.Course_CatalogModel;
-import laptrinhjavaweb.model.DepartmentModel;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

@@ -4,7 +4,6 @@ import laptrinhjavaweb.dao.IClass_OfferingDAO;
 import laptrinhjavaweb.dto.Class_OfferingDTO;
 import laptrinhjavaweb.mapper.ClassOfferingDTOMapper;
 import laptrinhjavaweb.mapper.Class_OfferingMapper;
-import laptrinhjavaweb.mapper.CourseMapper;
 import laptrinhjavaweb.model.Class_OfferingModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,7 +17,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Collections;
 import java.util.List;
 
 @Repository

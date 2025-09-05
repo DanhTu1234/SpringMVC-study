@@ -1,9 +1,7 @@
 package laptrinhjavaweb.api.admin;
 
 import laptrinhjavaweb.client.SyncServiceOffering;
-import laptrinhjavaweb.dto.Class_OfferingDTO;
 import laptrinhjavaweb.model.Class_OfferingModel;
-import laptrinhjavaweb.model.CourseModel;
 import laptrinhjavaweb.service.IClass_OfferingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
