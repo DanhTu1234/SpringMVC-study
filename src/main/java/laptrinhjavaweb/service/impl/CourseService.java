@@ -51,7 +51,7 @@ public class CourseService implements ICourseService {
     public CourseModel updateSyncCourse(CourseModel courseModel){
         CourseModel updateLcms =  courseDao.update(courseModel);
 
-        Long  lmsId = updateLcms.getLmsCourseId();
+        Long lmsId = updateLcms.getLmsCourseId();
         if (lmsId != null) {
             CourseDTO dtoToSend = courseDao.findCourseById(updateLcms.getId());
             syncServiceCourse.updateMoodleCourse(dtoToSend,lmsId);

@@ -14,8 +14,8 @@
     http://www.springframework.org/schema/context/spring-context.xsd">
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/lcms_db?useSSL=false"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/lcms_db?characterEncoding=UTF-8"/>
         <property name="username" value="root"/>
         <property name="password" value=""/>
     </bean>
@@ -27,6 +27,22 @@
     <!-- Activates scanning of @Repository and @Service and @Component -->
 
     <context:component-scan base-package="laptrinhjavaweb" />
+
+    <context:property-placeholder location="classpath:aws.properties" />
+
+    <bean id="s3Client" class="laptrinhjavaweb.config.AwsS3Factory" factory-method="create">
+        <constructor-arg value="${aws.accessKey}" />
+        <constructor-arg value="${aws.secretKey}" />
+        <constructor-arg value="${aws.s3.region}" />
+    </bean>
+
+<!--    Giới hạn file 50MB-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+        <property name="maxUploadSize" value="52428800"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
 
 </beans>
 

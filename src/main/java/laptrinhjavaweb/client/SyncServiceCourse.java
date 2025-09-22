@@ -17,9 +17,9 @@ import org.springframework.web.client.RestTemplate;
 public class SyncServiceCourse {
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private String MOODLE_URL = "http://localhost/moodle/webservice/rest/server.php";
+    private String MOODLE_URL = "http://localhost/moodleLms/webservice/rest/server.php";
 
-    private String MOODLE_TOKEN = "7e507051b8c5cc623386b70c6ec637b9";
+    private String MOODLE_TOKEN = "8ddb2d81f5adebc934803e08373d9b41";
 
     public Long createMoodleCourse(CourseDTO courseDTO) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
