@@ -1,17 +1,17 @@
 package laptrinhjavaweb.dto;
 
 public class CourseCategoryDTO {
-    private Long parent;
+    //private Long parent;
     private String name;
     private String description;
 
-    public Long getParent() {
-        return parent;
-    }
-
-    public void setParent(Long parent) {
-        this.parent = parent;
-    }
+//    public Long getParent() {
+//        return parent;
+//    }
+//
+//    public void setParent(Long parent) {
+//        this.parent = parent;
+//    }
 
     public String getName() {
         return name;

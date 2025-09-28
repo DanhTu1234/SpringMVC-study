@@ -46,6 +46,11 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    public CategoryCourseModel findOne(Long id) {
+        return categoryDao.findOne(id);
+    }
+
+    @Override
     @Transactional
     public CategoryCourseModel createSyncCategory(CategoryCourseModel categoryCourseModel) {
         CategoryCourseModel save = categoryDao.insert(categoryCourseModel);

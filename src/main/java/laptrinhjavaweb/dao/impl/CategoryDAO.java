@@ -29,7 +29,7 @@ public class CategoryDAO implements ICategoryDAO {
 
     @Override
     public CategoryCourseModel insert(CategoryCourseModel categoryCourseModel) {
-        String sql = "INSERT INTO categorycourse (name, parent, description) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO categorycourse (name, description) VALUES(?, ?)";
 
         // KeyHolder dùng để giữ ID tự tăng được sinh ra sau khi insert
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -40,8 +40,8 @@ public class CategoryDAO implements ICategoryDAO {
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, categoryCourseModel.getName());
-                ps.setLong(2, categoryCourseModel.getParent());
-                ps.setString(3, categoryCourseModel.getDescription());
+                //ps.setLong(2, categoryCourseModel.getParent());
+                ps.setString(2, categoryCourseModel.getDescription());
                 return ps;
             }
         }, keyHolder);
@@ -54,8 +54,8 @@ public class CategoryDAO implements ICategoryDAO {
 
     @Override
     public CategoryCourseModel update(CategoryCourseModel updateCategoryCourse) {
-        String sql = "UPDATE categorycourse SET name = ?, parent = ?, description = ?, lms_category_id = ? WHERE id = ?";
-        int row = jdbcTemplate.update(sql, updateCategoryCourse.getName(), updateCategoryCourse.getParent(),
+        String sql = "UPDATE categorycourse SET name = ?, description = ?, lms_category_id = ? WHERE id = ?";
+        int row = jdbcTemplate.update(sql, updateCategoryCourse.getName(),
                 updateCategoryCourse.getDescription(), updateCategoryCourse.getLms_category_id(), updateCategoryCourse.getId());
         if(row == 0){
             throw new RuntimeException("Không tìm thấy bản ghi");
@@ -88,7 +88,7 @@ public class CategoryDAO implements ICategoryDAO {
 
     @Override
     public CourseCategoryDTO findCategoryById(Long id){
-        String sql = "SELECT cc.name, cc.parent, cc.description " +
+        String sql = "SELECT cc.name, cc.description " +
                 "FROM categorycourse cc WHERE cc.id = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new CategoryCourseDTOMapper(), id);

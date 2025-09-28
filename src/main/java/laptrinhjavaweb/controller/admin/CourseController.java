@@ -1,6 +1,5 @@
 package laptrinhjavaweb.controller.admin;
 
-import laptrinhjavaweb.model.Class_OfferingModel;
 import laptrinhjavaweb.model.CourseModel;
 import laptrinhjavaweb.service.ICategoryService;
 import laptrinhjavaweb.service.ICourseService;

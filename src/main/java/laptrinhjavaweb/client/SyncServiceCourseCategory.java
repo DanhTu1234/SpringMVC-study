@@ -28,7 +28,7 @@ public class SyncServiceCourseCategory {
         params.add("moodlewsrestformat", "json");
 
         params.add("categories[0][name]", courseCategoryDTO.getName());
-        params.add("categories[0][parent]", courseCategoryDTO.getParent().toString());
+        //params.add("categories[0][parent]", courseCategoryDTO.getParent().toString());
         params.add("categories[0][description]", courseCategoryDTO.getDescription());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, new HttpHeaders());
@@ -54,7 +54,7 @@ public class SyncServiceCourseCategory {
         params.add("moodlewsrestformat", "json");
         params.add("categories[0][id]", String.valueOf(moodleCourseCategoryId));
         params.add("categories[0][name]", courseCategoryDTO.getName());
-        params.add("categories[0][parent]", courseCategoryDTO.getParent().toString());
+        //params.add("categories[0][parent]", courseCategoryDTO.getParent().toString());
         params.add("categories[0][description]", courseCategoryDTO.getDescription());
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, new HttpHeaders());

@@ -110,8 +110,8 @@ public class CourseService implements ICourseService {
 
     @Override
     public CourseModel findOne(Long id) {
-        CourseModel courseModel = courseDao.findOne(id);
-        return courseModel;
+        //CourseModel courseModel = courseDao.findOne(id);
+        return courseDao.findOne(id);
     }
 
 }

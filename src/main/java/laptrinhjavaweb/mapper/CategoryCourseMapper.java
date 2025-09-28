@@ -14,7 +14,7 @@ public class CategoryCourseMapper implements RowMapper<CategoryCourseModel> {
         course.setId(rs.getLong("id"));
         course.setName(rs.getString("name"));
         course.setDescription(rs.getString("description"));
-        course.setParent(rs.getLong("parent"));
+        //course.setParent(rs.getLong("parent"));
         return course;
     }
 }

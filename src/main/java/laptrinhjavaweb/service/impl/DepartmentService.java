@@ -22,8 +22,8 @@ public class DepartmentService implements IDepartmentService {
 
     @Override
     public DepartmentModel findOne(Long id) {
-        DepartmentModel departmentModel = departmentDAO.findOne(id);
-        return departmentModel;
+        //DepartmentModel departmentModel = departmentDAO.findOne(id);
+        return departmentDAO.findOne(id);
     }
 
     @Override

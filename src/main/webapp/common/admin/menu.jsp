@@ -37,35 +37,35 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
            aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-calendar-day"></i>
-            <span>Khóa học</span>
+            <span>Quản Lý Tổ Chức</span>
         </a>
         <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Các chức năng:</h6>
-                <a class="collapse-item" href="<c:url value='/quan-tri/khoa-hoc/danh-sach'/>">Liệt kê</a>
-                <a class="collapse-item" href='<c:url value='/quan-tri/khoa-hoc/them-moi'/>'>Thêm mới</a>
+                <a class="collapse-item" href="<c:url value='/quan-tri/danh-muc/danh-sach'/>">Quản Lý Khoa</a>
+                <a class="collapse-item" href="<c:url value='/quan-tri/khoa-hoc/danh-sach'/>">Quản Lý Khóa Học</a>
             </div>
         </div>
     </li>
+
+<%--    <li class="nav-item">--%>
+<%--        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"--%>
+<%--           aria-expanded="true" aria-controls="collapseTwo">--%>
+<%--            <i class="fas fa-calendar-day"></i>--%>
+<%--            <span>Quản Lý Tổ Chức</span>--%>
+<%--        </a>--%>
+<%--        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">--%>
+<%--            <div class="bg-white py-2 collapse-inner rounded">--%>
+<%--                <h6 class="collapse-header">Các chức năng:</h6>--%>
+<%--                <a class="collapse-item" href="<c:url value='/quan-tri/khoa/danh-sach'/>">Quản Lý Khoa</a>--%>
+<%--                <a class="collapse-item" href="<c:url value='/quan-tri/lop-hoc-phan/danh-sach'/>">Quản Lý Ngành</a>--%>
+<%--                <a class="collapse-item" href="#">Quản Lý Lớp Sinh Viên</a>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </li>--%>
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-           aria-expanded="true" aria-controls="collapseTwo">
-            <i class="fas fa-calendar-day"></i>
-            <span>Quản Lý Tổ Chức</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Các chức năng:</h6>
-                <a class="collapse-item" href="<c:url value='/quan-tri/khoa/danh-sach'/>">Quản Lý Khoa</a>
-                <a class="collapse-item" href="<c:url value='/quan-tri/lop-hoc-phan/danh-sach'/>">Quản Lý Ngành</a>
-                <a class="collapse-item" href="#">Quản Lý Lớp Sinh Viên</a>
-            </div>
-        </div>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
            aria-expanded="true" aria-controls="collapseTwo">
             <i class="fab fa-product-hunt"></i>
             <span>Quản Lý Học Vụ</span>
@@ -82,7 +82,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
            aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-wallet"></i>
             <span>Quản Lý Người Dùng</span>

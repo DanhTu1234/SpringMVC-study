@@ -1,12 +1,24 @@
 package laptrinhjavaweb.model;
 
 
+import java.util.List;
+
 public class CategoryCourseModel {
 
     private Long id;
     private String name;
-    private Long parent;
+    //private Long parent;
     private Long lms_category_id;
+
+    public List<CategoryCourseModel> getListResult() {
+        return listResult;
+    }
+
+    public void setListResult(List<CategoryCourseModel> listResult) {
+        this.listResult = listResult;
+    }
+
+    private List<CategoryCourseModel> listResult;
 
     public Long getLms_category_id() {
         return lms_category_id;
@@ -16,13 +28,13 @@ public class CategoryCourseModel {
         this.lms_category_id = lms_category_id;
     }
 
-    public Long getParent() {
-        return parent;
-    }
-
-    public void setParent(Long parent) {
-        this.parent = parent;
-    }
+//    public Long getParent() {
+//        return parent;
+//    }
+//
+//    public void setParent(Long parent) {
+//        this.parent = parent;
+//    }
 
     public String getDescription() {
         return description;

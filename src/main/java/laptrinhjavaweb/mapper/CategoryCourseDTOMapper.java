@@ -13,7 +13,7 @@ public class CategoryCourseDTOMapper implements RowMapper<CourseCategoryDTO> {
         CourseCategoryDTO courseCategoryDTO = new CourseCategoryDTO();
         courseCategoryDTO.setName(rs.getString("name"));
         courseCategoryDTO.setDescription(rs.getString("description"));
-        courseCategoryDTO.setParent(rs.getLong(("parent")));
+        //courseCategoryDTO.setParent(rs.getLong(("parent")));
 
         return courseCategoryDTO;
     }

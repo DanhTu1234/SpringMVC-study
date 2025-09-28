@@ -1,7 +1,6 @@
 package laptrinhjavaweb.service;
 
 import laptrinhjavaweb.model.CategoryCourseModel;
-import laptrinhjavaweb.model.CourseModel;
 
 import java.util.List;
 
@@ -13,4 +12,5 @@ public interface ICategoryService {
     CategoryCourseModel insert(CategoryCourseModel categoryCourseModel);
     CategoryCourseModel update(CategoryCourseModel updateCategory);
     void delete(long id);
+    CategoryCourseModel findOne(Long id);
 }
