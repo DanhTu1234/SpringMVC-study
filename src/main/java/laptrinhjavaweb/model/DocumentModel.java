@@ -1,11 +1,23 @@
 package laptrinhjavaweb.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DocumentModel {
     private Long id;
+
+    @JsonProperty("display_name")
     private String displayName;
+
+    @JsonProperty("file_name")
     private String fileName;
+
+    @JsonProperty("file_path")
     private String filePath;
+
+    @JsonProperty("file_type")
     private String fileType;
+
+    @JsonProperty("uploader_id")
     private Long uploaderId;
 
     public Long getUploaderId() {
@@ -72,6 +84,9 @@ public class DocumentModel {
         this.folderId = folderId;
     }
 
+    @JsonProperty("file_size")
     private Long fileSize;
+
+    @JsonProperty("folder_id")
     private Long folderId;
 }

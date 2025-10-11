@@ -4,18 +4,21 @@ import laptrinhjavaweb.dao.IDocumentDAO;
 import laptrinhjavaweb.model.DocumentModel;
 import laptrinhjavaweb.service.IDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.util.List;
 
 @Service
 public class DocumentService implements IDocumentService {
@@ -25,10 +28,18 @@ public class DocumentService implements IDocumentService {
     @Autowired
     private S3Client s3Client;
 
+    @Autowired
+    private S3Presigner s3Presigner;
+
     private String s3BucketName = "my-lcms";
 
     @Override
-    public DocumentModel uploadFile(MultipartFile file, Long folderId) {
+    public List<DocumentModel> findAll() {
+        return documentDAO.findAll();
+    }
+
+    @Override
+    public DocumentModel uploadFile(MultipartFile file) {
         String originalFileName = file.getOriginalFilename(); // Tên file gốc upload
         String storedFileName = System.currentTimeMillis() + "_" + originalFileName;  // Tạo tên mới để lưu trên S3
 
@@ -53,11 +64,44 @@ public class DocumentService implements IDocumentService {
             documentModel.setFilePath(fileUrl.toString());
             documentModel.setFileType(file.getContentType());
             documentModel.setFileSize(file.getSize());
-            documentModel.setFolderId(folderId);
+            //documentModel.setFolderId(folderId);
 
             return documentDAO.insert(documentModel);
         } catch (IOException e) {
             throw new RuntimeException("Lỗi khi upload file " + e.getMessage());
         }
+    }
+
+    @Override
+    public String generatePresignedUrl(String fileName, boolean download) {
+        try {
+            GetObjectRequest.Builder getObjectRequestBuilder = GetObjectRequest.builder()
+                    .bucket(s3BucketName)
+                    .key(fileName);
+
+            // Nếu là chế độ tải xuống thì ép header attachment
+            if (download) {
+                getObjectRequestBuilder.responseContentDisposition("attachment; filename=\"" + fileName + "\"");
+            }
+
+            GetObjectRequest getObjectRequest = getObjectRequestBuilder.build();
+
+            GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                    .signatureDuration(Duration.ofMinutes(10))
+                    .getObjectRequest(getObjectRequest)
+                    .build();
+
+            PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
+
+            return presignedRequest.url().toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Không thể tạo link tải file: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        documentDAO.delete(id);
     }
 }

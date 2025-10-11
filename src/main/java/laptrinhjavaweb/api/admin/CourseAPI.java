@@ -7,10 +7,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController(value = "classCourseAPIOfAdmin")
+@CrossOrigin("http://127.0.0.1:5500")
 public class CourseAPI {
     @Autowired
     private ICourseService courseService;
+
+    @GetMapping("/api/course")
+    public ResponseEntity<List<CourseModel>> getAllCourses() {
+        List<CourseModel> courses = courseService.findAll();
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/api/course/{id}")
+    public ResponseEntity<CourseModel> getCourseById(@PathVariable Long id) {
+        CourseModel course = courseService.findOne(id);
+        if (course != null) {
+            return ResponseEntity.ok(course);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @PostMapping("/api/course")
     public ResponseEntity<CourseModel> createCourse(@RequestBody CourseModel courseModel) {
