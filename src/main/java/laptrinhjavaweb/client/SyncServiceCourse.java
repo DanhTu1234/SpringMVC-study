@@ -1,8 +1,6 @@
 package laptrinhjavaweb.client;
 
-import laptrinhjavaweb.dto.Class_OfferingDTO;
 import laptrinhjavaweb.dto.CourseDTO;
-import laptrinhjavaweb.dto.ResponseClassOfferingDTO;
 import laptrinhjavaweb.dto.ResponseCourseDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
