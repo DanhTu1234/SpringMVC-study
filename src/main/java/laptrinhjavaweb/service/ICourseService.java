@@ -14,4 +14,5 @@ public interface ICourseService {
     CourseModel update(CourseModel updateCourse);
     void delete(long id);
     CourseModel findOne(Long id);
+    String syncAllCoursesFromMoodle();
 }

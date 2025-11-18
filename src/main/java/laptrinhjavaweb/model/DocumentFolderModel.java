@@ -1,8 +1,11 @@
 package laptrinhjavaweb.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DocumentFolderModel {
     private Long id;
     private String name;

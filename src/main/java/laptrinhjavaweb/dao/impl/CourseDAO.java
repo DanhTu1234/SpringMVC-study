@@ -2,7 +2,6 @@ package laptrinhjavaweb.dao.impl;
 
 import java.sql.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import laptrinhjavaweb.dao.ICourseDAO;

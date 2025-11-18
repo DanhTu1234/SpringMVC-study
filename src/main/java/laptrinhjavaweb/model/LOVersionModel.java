@@ -1,14 +1,42 @@
 package laptrinhjavaweb.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Timestamp;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LOVersionModel {
-    private Long id;
+    private Integer id;
+
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @JsonProperty("lo_id")
-    private Long loId;
+    private Integer loId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getLoId() {
+        return loId;
+    }
+
+    public void setLoId(Integer loId) {
+        this.loId = loId;
+    }
 
     @JsonProperty("version_number")
     private String versionNumber;
@@ -24,14 +52,6 @@ public class LOVersionModel {
 
     @JsonProperty("mime_type")
     private String mimeType;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Timestamp getCreatedAt() {
         return createdAt;
@@ -79,14 +99,6 @@ public class LOVersionModel {
 
     public void setVersionNumber(String versionNumber) {
         this.versionNumber = versionNumber;
-    }
-
-    public Long getLoId() {
-        return loId;
-    }
-
-    public void setLoId(Long loId) {
-        this.loId = loId;
     }
 
     private Timestamp createdAt;

@@ -48,4 +48,10 @@ public class CourseCategoryAPI {
         categoryService.deleteSyncCategory(id);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/api/sync/category")
+    public ResponseEntity<String> syncAllCategory() {
+        categoryService.syncAllCategoryFromMoodle();
+        return ResponseEntity.ok("Đồng bộ tất cả danh mục khóa học thành công!");
+    }
 }

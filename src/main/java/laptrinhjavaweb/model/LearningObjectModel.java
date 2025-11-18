@@ -1,11 +1,16 @@
 package laptrinhjavaweb.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Timestamp;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LearningObjectModel {
-    private Long id;
+    private Integer id;
+
+    @JsonProperty("folder_id")
+    private Long folderId;
 
     @JsonProperty("title")
     private String Title;
@@ -14,14 +19,26 @@ public class LearningObjectModel {
     private String Description;
 
     @JsonProperty("active_version_id")
-    private Long activeVersionId;
+    private Integer activeVersionId;
 
-    public Long getId() {
-        return id;
+    private LOVersionModel loVersion = new LOVersionModel();
+
+    public LOVersionModel getLoVersion() {
+        return loVersion;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLoVersion(LOVersionModel loVersion) {
+        this.loVersion = loVersion;
+    }
+
+    private DocumentFolderModel documentFolder = new DocumentFolderModel();
+
+    public DocumentFolderModel getDocumentFolder() {
+        return documentFolder;
+    }
+
+    public void setDocumentFolder(DocumentFolderModel documentFolder) {
+        this.documentFolder = documentFolder;
     }
 
     public String getTitle() {
@@ -40,11 +57,27 @@ public class LearningObjectModel {
         Description = description;
     }
 
-    public Long getActiveVersionId() {
+    public Long getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(Long folderId) {
+        this.folderId = folderId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getActiveVersionId() {
         return activeVersionId;
     }
 
-    public void setActiveVersionId(Long activeVersionId) {
+    public void setActiveVersionId(Integer activeVersionId) {
         this.activeVersionId = activeVersionId;
     }
 

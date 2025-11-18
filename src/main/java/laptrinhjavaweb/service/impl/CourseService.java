@@ -8,14 +8,18 @@ import laptrinhjavaweb.dao.ICategoryDAO;
 import laptrinhjavaweb.dao.ICourseDAO;
 
 import laptrinhjavaweb.dto.CourseDTO;
+import laptrinhjavaweb.dto.ResponseCourseDTO;
 import laptrinhjavaweb.model.CourseModel;
 import laptrinhjavaweb.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CourseService implements ICourseService {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private ICourseDAO courseDao;
@@ -89,14 +93,6 @@ public class CourseService implements ICourseService {
 
     @Override
     public CourseModel update(CourseModel updateCourse) {
-        // Lấy dữ liệu cũ từ DB
-//        CourseModel oldNew = courseDao.findOne(updateCourse.getId());
-//        // Giữ lại các thông tin không thay đổi
-//        updateCourse.setCreatedDate(oldNew.getCreatedDate());
-//        updateCourse.setCreatedBy(oldNew.getCreatedBy());
-//        updateCourse.setModifiedDate(new Timestamp(System.currentTimeMillis()));
-//        CategoryNewModel category = categoryDao.findOneByCode(updateNew.getCategoryCode());
-//        updateNew.setCategoryId(category.getId());
         // Gọi DAO để cập nhật vào DB
         courseDao.update(updateCourse);
         // Lấy lại dữ liệu đã cập nhật để trả về
@@ -110,8 +106,35 @@ public class CourseService implements ICourseService {
 
     @Override
     public CourseModel findOne(Long id) {
-        //CourseModel courseModel = courseDao.findOne(id);
         return courseDao.findOne(id);
+    }
+
+    public String syncAllCoursesFromMoodle(){
+        List<ResponseCourseDTO> moodleCourses = syncServiceCourse.getAllMoodleCourses();
+        int updatedCount = 0;
+        int insertedCount = 0;
+        for (ResponseCourseDTO dto : moodleCourses) {
+            if(dto.getCategoryid() == 0) {
+                continue; // Bỏ qua nếu categoryMoodle=0
+            }
+            Long localCategoryId = null;
+            try{
+                localCategoryId = jdbcTemplate.queryForObject("SELECT id FROM categorycourse WHERE lms_category_id = ?", Long.class, dto.getCategoryid());
+            } catch (Exception e){
+                System.out.println("Chưa đồng bộ danh mục khóa học Moodle ID: " + dto.getCategoryid());
+                continue;
+            }
+            String updateSql = "UPDATE course SET fullname = ?, shortname = ?, summary=?, category_id=? WHERE lms_course_id = ?";
+            int row = jdbcTemplate.update(updateSql, dto.getFullname(), dto.getShortname(), dto.getSummary(), localCategoryId, dto.getId());
+            if (row == 0) {
+                String insertSql = "INSERT INTO course (fullname, shortname, summary, category_id, lms_course_id) VALUES (?, ?, ?, ?, ?)";
+                jdbcTemplate.update(insertSql, dto.getFullname(), dto.getShortname(), dto.getSummary(), localCategoryId, dto.getId());
+                insertedCount++;
+            } else {
+                updatedCount++;
+            }
+        }
+        return "Đồng bộ hoàn tất. Cập nhật: " + updatedCount + ", Thêm mới: " + insertedCount;
     }
 
 }

@@ -56,4 +56,9 @@ public class CourseAPI {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/api/sync/courses")
+    public ResponseEntity<String> syncAllCourses() {
+        courseService.syncAllCoursesFromMoodle();
+        return ResponseEntity.ok("Đồng bộ tất cả khóa học thành công!");
+    }
 }

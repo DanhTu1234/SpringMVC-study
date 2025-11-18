@@ -13,4 +13,5 @@ public interface ICategoryService {
     CategoryCourseModel update(CategoryCourseModel updateCategory);
     void delete(long id);
     CategoryCourseModel findOne(Long id);
+    String syncAllCategoryFromMoodle();
 }

@@ -13,6 +13,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class SyncServiceCourseCategory {
     private final RestTemplate restTemplate = new RestTemplate();
@@ -20,6 +24,34 @@ public class SyncServiceCourseCategory {
     private String MOODLE_URL = "http://localhost/moodleLms/webservice/rest/server.php";
 
     private String MOODLE_TOKEN = "8ddb2d81f5adebc934803e08373d9b41";
+
+    public List<ResponseCourseCategoryDTO> getAllMoodleCategories() {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("wstoken", MOODLE_TOKEN);
+        params.add("wsfunction", "core_course_get_categories");
+        params.add("moodlewsrestformat", "json");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, new HttpHeaders());
+
+        try {
+            // Moodle trả về một MẢNG các đối tượng category
+            ResponseEntity<ResponseCourseCategoryDTO[]> response = restTemplate.exchange(
+                    MOODLE_URL,
+                    HttpMethod.POST,
+                    request,
+                    ResponseCourseCategoryDTO[].class
+            );
+
+            ResponseCourseCategoryDTO[] responseBody = response.getBody();
+            if (responseBody != null) {
+                return Arrays.asList(responseBody);
+            }
+        } catch (Exception e) {
+            System.err.println(">>> Lỗi khi lấy danh sách category từ Moodle: " + e.getMessage());
+        }
+
+        return Collections.emptyList();
+    }
 
     public Long createMoodleCourseCategory(CourseCategoryDTO courseCategoryDTO) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -82,4 +114,5 @@ public class SyncServiceCourseCategory {
             return false;
         }
     }
+
 }

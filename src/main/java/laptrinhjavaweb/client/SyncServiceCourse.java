@@ -11,6 +11,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class SyncServiceCourse {
     private final RestTemplate restTemplate = new RestTemplate();
@@ -18,6 +22,36 @@ public class SyncServiceCourse {
     private String MOODLE_URL = "http://localhost/moodleLms/webservice/rest/server.php";
 
     private String MOODLE_TOKEN = "8ddb2d81f5adebc934803e08373d9b41";
+
+    public List<ResponseCourseDTO> getAllMoodleCourses() {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("wstoken", MOODLE_TOKEN);
+        params.add("wsfunction", "core_course_get_courses");
+        params.add("moodlewsrestformat", "json");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, new HttpHeaders());
+
+        try {
+            // Moodle trả về một MẢNG các đối tượng khóa học
+            ResponseEntity<ResponseCourseDTO[]> response = restTemplate.exchange(
+                    MOODLE_URL,
+                    HttpMethod.POST,
+                    request,
+                    ResponseCourseDTO[].class
+            );
+
+            ResponseCourseDTO[] responseBody = response.getBody();
+            if (responseBody != null) {
+                // Chuyển mảng thành một List
+                return Arrays.asList(responseBody);
+            }
+        } catch (Exception e) {
+            System.err.println(">>> Lỗi khi lấy danh sách khóa học từ Moodle: " + e.getMessage());
+        }
+
+        // Trả về một danh sách rỗng nếu không lấy được dữ liệu
+        return Collections.emptyList();
+    }
 
     public Long createMoodleCourse(CourseDTO courseDTO) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

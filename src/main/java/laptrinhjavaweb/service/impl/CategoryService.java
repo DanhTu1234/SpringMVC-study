@@ -4,10 +4,13 @@ import laptrinhjavaweb.client.SyncServiceCourseCategory;
 import laptrinhjavaweb.dao.ICategoryDAO;
 import laptrinhjavaweb.dto.CourseCategoryDTO;
 import laptrinhjavaweb.dto.CourseDTO;
+import laptrinhjavaweb.dto.ResponseCourseCategoryDTO;
+import laptrinhjavaweb.dto.ResponseCourseDTO;
 import laptrinhjavaweb.model.CategoryCourseModel;
 import laptrinhjavaweb.model.CourseModel;
 import laptrinhjavaweb.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +19,8 @@ import java.util.List;
 
 @Service
 public class CategoryService implements ICategoryService {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private ICategoryDAO categoryDao;
@@ -97,6 +102,24 @@ public class CategoryService implements ICategoryService {
             }
         }
         categoryDao.delete(id);
+    }
+
+    public String syncAllCategoryFromMoodle(){
+        List<ResponseCourseCategoryDTO> moodleCategory = syncServiceCourseCategory.getAllMoodleCategories();
+        int updatedCount = 0;
+        int insertedCount = 0;
+        for (ResponseCourseCategoryDTO dto : moodleCategory){
+            String updateSql = "UPDATE categorycourse SET name = ?, description=? WHERE lms_category_id = ?";
+            int row = jdbcTemplate.update(updateSql, dto.getName(), dto.getDescription(), dto.getId());
+            if (row == 0) {
+                String insertSql = "INSERT INTO categorycourse (name, description, lms_category_id) VALUES (?, ?, ?)";
+                jdbcTemplate.update(insertSql, dto.getName(), dto.getDescription(), dto.getId());
+                insertedCount++;
+            } else {
+                updatedCount++;
+            }
+        }
+        return "Đồng bộ hoàn tất. Cập nhật: " + updatedCount + ", Thêm mới: " + insertedCount;
     }
 
 }
